@@ -178,10 +178,10 @@ class VideoMixer:
 					h = size[1]
 					w = size[0]
 					
-					cond1 = "/hor" in file and "horizontal" in self.flags
-					cond4 = h > w and "vertical" in self.flags			
-					cond2 = "/vert" in file and "vertical" in self.flags
-					cond5 = w > h and "horizontal" in self.flags			
+					cond1 = ("/hor" in file) and ("horizontal" in self.flags)
+					cond4 = (h > w) and ("vertical" in self.flags)			
+					cond2 = ("/vert" in file) and ("vertical" in self.flags)
+					cond5 = (w > h) and ("horizontal" in self.flags)			
 					cond3 = "both" in self.flags
 
 					print(self.flags)
@@ -192,7 +192,7 @@ class VideoMixer:
 					print(cond4)
 					print(cond5)
 
-					resolved_dimensions = cond1 or cond2 or cond3 or cond4 or cond5
+					resolved_dimensions = cond1 or cond2 or cond3 # or cond4 or cond5
 
 					time = self.gettime(clip.duration, self.e8.random(self.seconds))
 					pathoforiginal = Path(clip.filename) 									
