@@ -1,7 +1,7 @@
 from lib.randomio import RandomIO
 from lib.eightball import EightBall
 
-image1 = "/home/evgenii/Desktop/samples_img/9.jpg"
+image1 = "./samples_img/10.jpg"
 image2 = "/home/evgenii/Desktop/music folder/"
 
 musicfolder = "/home/evgenii/Desktop/music folder/"
@@ -14,7 +14,8 @@ musics = RandomIO.music(musicfolder)
 
 salt_bytes1 = RandomIO.getBytesFromImage(image1)
 e81 = EightBall(salt_bytes1)
-one = e81.getOneByEightBall(musics)
+one = e81.getOneBySalts(musics)
+# one = e81.getOneByEightBall(files)
 
 print(one)
 print("------------------------------------------------")

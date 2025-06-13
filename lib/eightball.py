@@ -145,4 +145,12 @@ class EightBall:
 			
 		return item
 		
+	# only random by salts
 
+	def getOneBySalts(self, ar, justnum = False):
+		item = self.getOne(ar, self.salts[self.i], justnum)					
+		
+		if self.useend and self.theend:
+			return False
+			
+		return item		

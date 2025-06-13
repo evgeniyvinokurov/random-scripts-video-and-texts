@@ -13,6 +13,7 @@ files = RandomIO.files(folder, [".txt"])
 
 salt_bytes1 = RandomIO.getBytesFromImage(image1)
 e81 = EightBall(salt_bytes1)
+# one = e81.getOneBySalts(files)
 one = e81.getOneByEightBall(files)
 
 print(one)

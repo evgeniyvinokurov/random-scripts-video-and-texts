@@ -26,3 +26,55 @@
 8 - /home/evgenii/Desktop/music folder//found/Vicious_Crusade_-_furbidden_tunes.mp3
 9 - /home/evgenii/Desktop/music folder//found/КОЛЛЕКЦИЯ ДНЕЙ & СИД (ТАРАКАНЫ) - ПЕНСИЯ.mp3
 10 - /home/evgenii/Desktop/music folder//found/Metallica_-_Paranoid.mp3
+
+randomize files 
+
+1 - ./samples//8.txt
+2 - ./samples//6.txt
+3 - ./samples//6.txt
+4 - ./samples//7.txt
+5 - ./samples//3 (another copy).txt
+6 - ./samples//8 (9th copy).txt
+7 - ./samples//8.txt
+8 - ./samples//7 (3rd copy).txt
+9 - ./samples//4.txt
+10 -./samples//4 (7th copy).txt
+
+
+only salts
+1 - ./samples//3 (10th copy).txt
+2 - ./samples//8 (3rd copy).txt
+3 - ./samples//8 (10th copy).txt
+4 - ./samples//5 (7th copy).txt
+5 - ./samples//2 (4th copy).txt
+6 - ./samples//9 (4th copy).txt
+7 - ./samples//3 (8th copy).txt
+8 - ./samples//6 (another copy).txt
+9 - ./samples//5 (6th copy).txt
+10 - ./samples//4 (3rd copy).txt
+
+1 - /home/evgenii/Desktop/music folder//found/03 Never Enough (feat. 50 Cent & Nate Dogg).mp
+2 - /home/evgenii/Desktop/music folder//found/Ирина_Ежова_-_Курносая.mp3.mp3
+3 - /home/evgenii/Desktop/music folder//found/#1_19_One step closer (Live at the Mtv VMA 2001).mp3
+4 - /home/evgenii/Desktop/music folder//found/MoDo_-_Eins_Zwei_Polizei.mp3
+5 - /home/evgenii/Desktop/music folder//found/I just call.m4a.mp3
+6 - /home/evgenii/Desktop/music folder//found/Англорусский словарь.m4a.mp3
+7 - /home/evgenii/Desktop/music folder//found/08 - Ремонт.mp3
+8 - /home/evgenii/Desktop/music folder//found/Vicious_Crusade_-_furbidden_tunes.mp3
+9 - /home/evgenii/Desktop/music folder//found/КОЛЛЕКЦИЯ ДНЕЙ & СИД (ТАРАКАНЫ) - ПЕНСИЯ.mp3
+10 - /home/evgenii/Desktop/music folder//found/Metallica_-_Paranoid.mp3
+
+randomize files 
+
+1 - ./samples//8.txt
+2 - ./samples//1 (copy).txt
+3 - ./samples//6.txt
+4 - ./samples//4 (4th copy).txt
+5 - ./samples//3 (another copy).txt
+6 - ./samples//8 (9th copy).txt
+7 - ./samples//2.txt
+8 - ./samples//7 (3rd copy).txt
+9 - ./samples//4.txt
+10 - ./samples//4 (7th copy).txt
+
+
