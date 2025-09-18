@@ -38,11 +38,10 @@ class RandomIO:
         
         for file in filestxt:
             try:
-                with open(file, 'r') as f:
+                with open(file, 'r', encoding="utf-8") as f:
                     string_from_files += f.read()
             except:
                 pass
-                    
         return string_from_files   
 
     @staticmethod	      

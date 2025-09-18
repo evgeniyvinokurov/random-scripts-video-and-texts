@@ -4,3 +4,4 @@ splits/*
 env/*
 textsdir/*
 retext*
+.vs/*
