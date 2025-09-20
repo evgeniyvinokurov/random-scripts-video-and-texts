@@ -1,45 +1,31 @@
-import os
-import hashlib
-from textwrap import wrap
-
 from lib.eightball import EightBall
 from lib.randomio import RandomIO
+from lib.magicklib import MagickLib
 
-textsdir = "./textsdir/"
+# folder with images or texts, at least > than 10 (*.jpgs) or txts with htmls as utf-8
+# images = "C:\\Users\\RobotComp.ru\\Desktop\\testimg\\"
+textsdir = "C:\\Users\\RobotComp.ru\\Desktop\\testtxts\\"
 
+# salts strings
 salt_bytes1 = RandomIO.getTextBytesFromTextDir(textsdir)
+
+# or 
+# salt_bytes1 = RandomIO.getBytesFromImages(images)
+
+# way to deal with choosing
 e81 = EightBall(salt_bytes1)
-count = 0
 
-choosen = []
-more = []
 
-print("input count of digits:")
-n = int(input())
-
-print("input last number in sequence from 1..:")
+print("L. input last number in sequence from 1..L (ALL NUMBERS): ")
 L = int(input())
 
-numbers = range(1,L)
+print("n. input count of digits (COUNT TO CHOOSE FROM 1..L):")
+n = int(input())
 
-print(e81.getOneByEightBall(numbers))
-
-while count < n:
-    one = e81.getOneByEightBall(numbers)
-    if one not in choosen:
-        choosen.append(one)
-        count = count + 1
-
+choosen = MagickLib.lottery(n, L, e81)
 		
 print("------------------------------------------------")
 print(choosen)
 print("------------------------------------------------")
 
-
-#salt_bytes2 = getBytesFromImage(image2)
-#e82 = EightBall(salt_bytes2)
-#two = e82.getOneByEightBall(musics)
-#print(two)
-
-#print("------------------------------------------------")
 
