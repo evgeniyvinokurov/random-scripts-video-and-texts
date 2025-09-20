@@ -11,9 +11,7 @@ class MagickLib:
     ENGLISH = "a b c d e f g h i j k l m n o p q r s t u v w x y z".split(" ")
    
     @staticmethod
-    def autoletter(saltsbytes) :
-        e81 = EightBall(saltsbytes)
-
+    def autoletter(e81) :
         i = 100
         rletter = ""
         while i != 0:
@@ -25,12 +23,10 @@ class MagickLib:
                 rletter = rletter + " "
             i = i - 1
             
-        e82 = EightBall(saltsbytes)
-
         i = 100
         eletter = ""
         while i != 0:
-            one = e82.getOneByEightBall(MagickLib.ENGLISH)
+            one = e81.getOneByEightBall(MagickLib.ENGLISH)
             if one:
                 eletter = eletter + one
                 
