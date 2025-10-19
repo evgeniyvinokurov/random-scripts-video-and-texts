@@ -40,6 +40,27 @@ class Musicle:
                 except:
                     pass
         return result
+    
+    @staticmethod
+    def music_files(path) :
+        hashes = []
+        result = []
+        exts = Musicle.get_exts()
+
+        for file in os.listdir(path):
+            newpath = path + "/" + file
+            try:
+                if not os.path.isfile(newpath):	
+                    result.extend(Musicle.music_files(newpath))
+            except:
+                pass
+            for ext in exts:
+                try:
+                    if os.path.isfile(newpath) and newpath.endswith(ext):
+                        result.append(newpath)
+                except:
+                    pass
+        return result
 
     @staticmethod
     def getmd5(path) :
@@ -64,6 +85,18 @@ class Musicle:
             except:
                 print("damaged " + m)
                 pass
+
+    @staticmethod
+    def checkfile_nocopy(m):
+        try:
+            ffmpeg.input(m).output("null", f="null").run()
+            basename = os.path.basename(m)
+            print(basename)
+            return True
+        except:
+            print("damaged " + m)
+            return False
+      
     
     @staticmethod
     def playlist(musicfolder, dirplaylists, n, e81, passbroken):

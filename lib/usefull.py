@@ -18,8 +18,8 @@ from datetime import date
 import time
 
 class Usefull:	
-    @staticmethod
 
+    @staticmethod
     # cutting audio to the size of video and appending to video
     def appendAudio(videofile, audiofile, out):
         with VideoFileClip(videofile) as clip:
@@ -34,6 +34,7 @@ class Usefull:
 
     # seaarching for duplicates, using extensions param and flags array
     # printing duplicates and stores them in folder
+    @staticmethod
     def duplicates(params, flags, dir, duplicatesdir):
         movefiles = False
 
@@ -74,6 +75,7 @@ class Usefull:
             print(dublicates)
     
     # makes sitemap.xml
+    @staticmethod
     def links(html):      
         class MyHTMLParser(HTMLParser):
             allhtml = ""
@@ -88,3 +90,10 @@ class Usefull:
         parser = MyHTMLParser()
         parser.feed(html)
         print(parser.allhtml)
+
+    @staticmethod
+    def remove_spaces(str):
+        result = str.replace(")","")
+        result = result.replace("(","")
+        result = result.replace("'","")
+        return result.replace(" ", "")	

@@ -55,22 +55,6 @@ class EightBall:
 			result = self.getOneByEightBall(ar)
 		
 		return result
-	
-	def randomFromRange(self, minv, maxv):
-		result = None
-		rlist = []
-		
-		if minv < maxv: 
-			r = range(minv, ceil(maxv), 1)
-			rlist.extend(r) 
-			rlist.append(maxv) 
-					
-		if self.mode == "free":
-			result = random.choice(rlist)
-		else:
-			result = self.getOneByEightBall(rlist)
-		
-		return result
 			
 	def answer(self):			
 		if self.mode == "free":
@@ -82,6 +66,18 @@ class EightBall:
 			return True
 		else:
 			return False
+		
+	# only random 8 ball
+
+	def getOneRandomWithEightBall(self, ar):
+		item = None
+		yes = False
+		
+		while not yes:		
+			item = random.choice(ar)
+			yes = self.answer()
+
+		return item	
 			
 	# salted 8 ball	
 	
@@ -129,21 +125,6 @@ class EightBall:
 			sums = sums + sumitem
 		answer = ceil(sums % length)		
 		return answer
-	
-	
-	# 8 ball by random generator
-	
-	def getOneRandomByEightBall(self, ar):
-		length = len(ar)
-
-		item = None
-		yes = False
-		
-		while not yes:		
-			item = random.choice(ar)
-			yes = self.answer()
-			
-		return item
 		
 	# only random by salts
 
@@ -154,3 +135,39 @@ class EightBall:
 			return False
 			
 		return item		
+	
+	# shuffle 
+
+	def shuffle(self, ar, mode):		
+		for i in range(len(ar) - 1, 0, -1):
+			if mode == "free8ball":
+				one = self.getOneRandomWithEightBall(ar)
+				j = ar.index(one)			
+			elif mode == "salted":				
+				one = self.getOneByEightBall(ar)
+				j = ar.index(one)
+			else:
+				one = random.choice(ar)
+				j = ar.index(one)
+			ar[i], ar[j] = ar[j], ar[i]
+		return ar
+	
+	# random from range
+	
+	def randomFromRange(self, minv, maxv, mode):
+		result = None
+		rlist = []
+		
+		if minv < maxv: 
+			r = range(minv, ceil(maxv), 1)
+			rlist.extend(r) 
+			rlist.append(maxv) 
+					
+		if mode == "free8ball":
+			result = self.getOneRandomWithEightBall(rlist)
+		elif mode == "salted":
+			result = self.getOneByEightBall(rlist)
+		else:
+			result = random.choice(rlist)
+		
+		return result
