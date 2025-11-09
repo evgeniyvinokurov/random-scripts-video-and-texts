@@ -97,7 +97,14 @@ class Musicle:
             print("damaged " + m)
             return False
       
-    
+    @staticmethod
+    def file_length(m):
+        try:
+            probe_data = ffmpeg.probe(m)
+            return float(probe_data["format"]["duration"])
+        except:
+            return 0
+        
     @staticmethod
     def playlist(musicfolder, dirplaylists, n, e81, passbroken):
         count = 0

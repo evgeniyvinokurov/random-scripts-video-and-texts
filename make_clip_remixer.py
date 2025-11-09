@@ -1,7 +1,4 @@
-import hashlib
-import os
 import json
-import sys
 
 from textwrap import wrap
 from lib.remixer import ReMixer
@@ -11,15 +8,10 @@ with open("./.config", "rb") as f:
 	settings = json.loads(f.read())
 
 settings["8ball"] = True
+settings["song"] = True
 
 print(settings)
 rem = ReMixer(settings)
-
-count = 10
-i = 0
-while i	< count:
-	x = rem.run()
-	i = i + 1
-	
+x = rem.run()	
 
 #rem.run("i")

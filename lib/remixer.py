@@ -39,10 +39,16 @@ class ReMixer:
 		
 		self.folders = opts["folders"]
 		self.mfolders = opts["mfolders"]
+
+		if "thissong" in opts:
+			self.thissong = opts["thissong"]	
+
+		if "song" in opts:
+			self.song = True
 		
 		if "salts" in opts:
 			self.e8 = EightBall(opts["salts"])
-			self.mode = "salted"
+			self.mode = "salted"			
 		elif "8ball" in opts:
 			self.e8 = EightBall()
 			self.mode = "8ballfree"
@@ -58,6 +64,31 @@ class ReMixer:
 			if 'cut' in self.flags:
 				self.maketree(['cuts'])
 				self.split_files()
+
+			if self.song: 
+				self.maketree(['cuts', 'prod', 'temp'])
+
+				while True:
+					song = self.get_song(None)
+					print(song)
+					x = input()
+					if x == "y": 
+						break  
+
+				self.split_files_to_clip_length(song["duration"])
+				self.clear_small_files()
+				self.concatenate(finalfile)
+				self.make_song(finalfile, song["file"])
+				return True
+
+			if "thissong" in self.flags: 
+				self.maketree(['cuts', 'prod', 'temp'])
+				song = self.get_song(self.thissong)
+
+				self.split_files_to_clip_length(song["duration"])
+				self.clear_small_files()
+				self.concatenate(finalfile)
+				self.make_song(finalfile, song["file"])
 
 			if 'all' in self.flags:
 				self.maketree(['cuts', 'prod', 'temp'])
@@ -83,6 +114,8 @@ class ReMixer:
 
 			if 'final' in self.flags:
 				self.add_audio(finalfile)
+
+
 		except:
 			print("LOGIC ERROR")
 			return False
@@ -172,6 +205,19 @@ class ReMixer:
 			self.make_one_split(filesofvideos)
 			i = i + 1
 
+	def split_files_to_clip_length(self, duration):
+		filesofvideos = []
+
+		for folder in self.folders:
+			filesofvideos.extend(RandomIO.files(folder, self.get_exts()))
+
+		print(str(len(filesofvideos)) + " videos found")
+
+		clip_time = 0
+
+		while clip_time < duration:
+			clip_time += self.make_one_split(filesofvideos)
+
 	# choosing random algorithm
 	def local_random(self, arr):
 		if len(arr) > 0:			
@@ -237,15 +283,16 @@ class ReMixer:
 								output = ffmpeg.output(vid, filename)
 								output.run()
 								print("ffmpeg done")
-								break
+								return time[0][1] - time[0][0]
 							except:
 								print("ERROR FFMPEG FILE")
+								return 0
 						else:
 							print("test mode")
+							return 0
 			except:
 				print("ERROR MOVIEPY FILE")
-				pass
-		
+				return 0
 
 	# gets audio and combines final clip with audio
 	def add_audio(self, finalfile) :
@@ -280,6 +327,18 @@ class ReMixer:
 				print("ERROR AUDIO")
 				pass
 
+	# makes audio to video
+	def make_song(self, finalfile, song) :
+		try:
+			video = ffmpeg.input(finalfile)
+			audio = ffmpeg.input(song)
+			audiobasename = Usefull.remove_spaces(os.path.basename(song))
+			ffmpeg.concat(video, audio, v=1, a=1).output('./splits/final_' + datetime.now().strftime("%d.%m.%Y_%H:%M:%S") + audiobasename + '_full_clip.mp4').run()
+			print("clip done")
+		except:
+			print("ERROR AUDIO")
+			pass
+
 	# concatentes splits to clip
 	def concatenate(self, finalfile):
 		try:		
@@ -306,3 +365,31 @@ class ReMixer:
 		except:
 			print("ERROR CONCATENATE")
 			pass
+	
+		# makes split from file
+	
+	# gets song with length
+	def get_song(self, songfile):
+		filesofmusic = []
+		
+		if songfile is None:
+			for folder in self.mfolders:
+				filesofmusic.extend(Musicle.music_files(folder))
+
+		print(str(len(filesofmusic)) + " music files found")
+		
+		try:
+			while True:
+				if songfile is not None:
+					file = songfile
+				else:
+					file = self.local_random(filesofmusic)
+					if Musicle.checkfile_nocopy(file):
+						break
+		except:
+			print("ERROR AUDIO")
+			pass
+
+		duration = Musicle.file_length(file)
+		
+		return { "duration": duration, "file": file }
