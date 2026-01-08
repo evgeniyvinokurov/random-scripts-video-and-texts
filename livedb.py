@@ -1,7 +1,7 @@
 from lib.magicklib import MagickLib
 
 # dir with utf-8 texts, .txts .htmls
-textsdir = "C:\\Users\\RobotComp.ru\\Desktop\\testtxts\\"
+textsdir = "./textsdir/"
 
 MagickLib.livequery(textsdir)
 	
