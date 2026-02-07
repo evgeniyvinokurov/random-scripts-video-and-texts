@@ -8,7 +8,10 @@ import datetime
 import time
 import random
 import json
+import re
 
+
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from moviepy.editor import VideoFileClip
@@ -185,10 +188,6 @@ class ReMixer:
 			return False
 
 		return result
-		result = str.replace(")","")
-		result = result.replace("(","")
-		result = result.replace("'","")
-		return result.replace(" ", "")	
 
 	# makes splits
 	def split_files(self):
@@ -393,3 +392,69 @@ class ReMixer:
 		duration = Musicle.file_length(file)
 		
 		return { "duration": duration, "file": file }
+
+	def probe(self, v):
+
+		print("probe default")
+		try:
+			probe_data = ffmpeg.probe(v)
+			for stream in probe_data["streams"]:
+				if stream["codec_type"] == "video":
+
+					h = stream["height"]
+					w = stream["width"]
+
+					print("width:" + str(h))
+					print("height:" + str(w))
+					print("\n")
+
+					if w >= h:
+						return "horizontal"
+					else:
+						return "vertical"
+		except:
+			return ""
+
+	def probe_moviepy(self, v):
+		print("movie py probe")
+		with VideoFileClip(v) as clip:
+			size = clip.size
+			h = size[1]
+			w = size[0]
+
+			print("width:" + str(h))
+			print("height:" + str(w))
+			print("\n")
+
+			if w >= h:
+				return "horizontal"
+			else:
+				return "vertical"
+
+	def ffprobe(self, v):
+
+		print("ff probe")
+		command = "ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "
+		command += "'" + v + "'"
+
+		result = subprocess.run(command, shell=True, capture_output=True, text=True, check=True)
+		command_output = result.stdout
+		
+		# print(command_output)
+
+		parts = re.findall(r'\d+', command_output)
+
+		# print(parts)
+
+		print("width:" + w)
+		print("height:" + h)
+
+		w = int(parts[1])
+		h = int(parts[0])
+
+		print("\n")
+
+		if w >= h:
+			return "horizontal"
+		else:
+			return "vertical"
