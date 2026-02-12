@@ -30,6 +30,19 @@ class RandomIO:
                     pass
         return result
 
+    @staticmethod
+    def dirs(path):
+        result = []
+        for file in os.listdir(path):
+            newpath = path + "/" + file
+            try:
+                if not os.path.isfile(newpath):	
+                    result.extend(RandomIO.dirs(newpath))
+            except:
+                pass
+            result.append(newpath)
+        return result
+
 
     @staticmethod
     def getTextBytesFromTextDir(folder):

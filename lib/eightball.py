@@ -91,7 +91,7 @@ class EightBall:
 		item = None
 		yes = False
 		
-		while not yes:		
+		while not yes:
 			item = self.getOne(ar, self.salts[self.i], justnum)			
 			yes = self.answer()
 		
