@@ -3,12 +3,12 @@ from lib.randomio import RandomIO
 from lib.musicle import Musicle
 
 
-musicfolder = "C:\\Users\\RobotComp.ru\\Desktop\\testwav"
-dirplaylists = "C:\\Users\\RobotComp.ru\\Desktop\\"
+musicfolder = "/home/evgenii/Desktop/all/before work/music folder/"
+dirplaylists = "/home/evgenii/Desktop/"
 
 # folder with images or texts, at least > than 10 (*.jpgs) or txts with htmls as utf-8
 # images = "C:\\Users\\RobotComp.ru\\Desktop\\testimg\\"
-txts = "C:\\Users\\RobotComp.ru\\Desktop\\testtxts\\"
+txts = "./textsdir"
 
 # or 
 # salt_bytes1 = RandomIO.getBytesFromImages(images)

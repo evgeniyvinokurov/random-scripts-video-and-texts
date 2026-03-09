@@ -37,10 +37,10 @@ class RandomIO:
             newpath = path + "/" + file
             try:
                 if not os.path.isfile(newpath):	
+                    result.append(newpath)
                     result.extend(RandomIO.dirs(newpath))
             except:
                 pass
-            result.append(newpath)
         return result
 
 

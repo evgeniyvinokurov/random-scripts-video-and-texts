@@ -97,8 +97,3 @@ class Usefull:
         result = result.replace("(","")
         result = result.replace("'","")
         return result.replace(" ", "")	
-    
-    @staticmethod
-    def find_all_dirs(dir):
-        dirs = RandomIO.dirs(dir)
-        return dirs
