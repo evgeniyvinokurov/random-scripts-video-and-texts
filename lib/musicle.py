@@ -106,11 +106,11 @@ class Musicle:
             return 0
         
     @staticmethod
-    def playlist(musicfolder, dirplaylists, n, e81, passbroken):
+    def playlist(musicfolder, dirplaylists, n, e81):
         count = 0
         choosen = []
 
-        musics = Musicle.files(musicfolder, Musicle.get_exts())
+        musics = Musicle.music_files(musicfolder)
 
         while count < n:
             if not e81:
@@ -120,9 +120,9 @@ class Musicle:
                 one = e81.getOneByEightBall(musics)
                 name = str(e81.getOneByEightBall(range(1,100000)))
 
-            print(one)
-            
-            if one not in choosen:
+            ok = Musicle.checkfile_nocopy(one)
+
+            if ok and (one not in choosen):
                 choosen.append(one)
                 count = count + 1                
 
@@ -130,14 +130,8 @@ class Musicle:
 
         with open(musicplaylistfile, mode="w", encoding="utf-8") as f:
             for m in choosen:	
-                if passbroken:
-                    try:
-                        ffmpeg.input(m).output("null", f="null").run()
-                        f.write(m + "\r\n")
-                    except:
-                        pass
-                else:
-                    f.write(m + "\r\n")
+                ffmpeg.input(m).output("null", f="null").run()
+                f.write(m + "\r\n")               
 
         print(musicplaylistfile)
         

@@ -19,7 +19,8 @@ e81 = EightBall(salt_bytes1)
 print("input count of songs:")
 n = int(input())
 
-Musicle.playlist(musicfolder, dirplaylists, n, False, True)
+# Musicle.playlist(musicfolder, dirplaylists, n, False, True)
+Musicle.playlist(musicfolder, dirplaylists, n, e81)
 
 		
 print("------------------------------------------------")
