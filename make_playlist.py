@@ -7,13 +7,13 @@ musicfolder = "/home/evgenii/Desktop/all/before work/music folder/"
 dirplaylists = "/home/evgenii/Desktop/"
 
 # folder with images or texts, at least > than 10 (*.jpgs) or txts with htmls as utf-8
-# images = "C:\\Users\\RobotComp.ru\\Desktop\\testimg\\"
-txts = "./textsdir"
+images = "/home/evgenii/Desktop/imagesforscan/"
+# txts = "./textsdir"
 
 # or 
-# salt_bytes1 = RandomIO.getBytesFromImages(images)
+salt_bytes1 = RandomIO.getBytesFromImages(images)
 
-salt_bytes1 = RandomIO.getTextBytesFromTextDir(txts)
+# salt_bytes1 = RandomIO.getTextBytesFromTextDir(txts)
 e81 = EightBall(salt_bytes1)
 
 print("input count of songs:")
