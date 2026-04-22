@@ -1,15 +1,11 @@
 import os
-import sys
 import shutil
 import glob
 import ffmpeg
 import random
 import datetime
-import time
 import random
-import json
 import re
-
 
 import subprocess
 from datetime import datetime
@@ -24,41 +20,9 @@ from .randomio import RandomIO
 class ReMixer:
 	def __init__(self, opts):
 		print(opts)
-
-		self.opts = opts
-		defaults = { "flags": ["all", "both"], "countv": 20, "seconds": [0.2,0.5,0.7,1,1.5,1.7,2,3] }
+		self.make_settings(opts)
 		
-		self.countv = defaults["countv"]
-		if "countv" in opts:
-			self.countv = opts["countv"]		
-			
-		self.seconds = defaults["seconds"]
-		if "seconds" in opts:
-			self.seconds = opts["seconds"]
-			
-		self.flags = defaults["flags"]	
-		if "flags" in opts:
-			self.flags = opts["flags"]
-		
-		self.folders = opts["folders"]
-		self.mfolders = opts["mfolders"]
-
-		if "thissong" in opts:
-			self.thissong = opts["thissong"]	
-
-		if "song" in opts:
-			self.song = True
-		
-		if "salts" in opts:
-			self.e8 = EightBall(opts["salts"])
-			self.mode = "salted"			
-		elif "8ball" in opts:
-			self.e8 = EightBall()
-			self.mode = "8ballfree"
-		else:
-			self.mode = "free"
-		
-	def run(self):
+	def run(self):		
 		print(self.flags)
 
 		finalfile = "./splits/prod/final.mp4"
@@ -75,8 +39,8 @@ class ReMixer:
 					song = self.get_song(None)
 					print(song)
 					x = input()
-					if x == "y": 
-						break  
+					if x == "y":
+						break
 
 				self.split_files_to_clip_length(song["duration"])
 				self.clear_small_files()
@@ -119,10 +83,49 @@ class ReMixer:
 				self.add_audio(finalfile)
 
 
-		except:
+		except Exception as e:
+			print(f"Type: {type(e).__name__}")
+			print(f"Message: {e}")
 			print("LOGIC ERROR")
 			return False
+
 		return True
+
+	# makes default settings
+	def make_settings(self, opts):
+		self.opts = opts
+
+		defaults = { "flags": ["all", "both"], "countv": 20, "seconds": [0.2,0.5,0.7,1,1.5,1.7,2,3] }
+		
+		self.countv = defaults["countv"]
+		if "countv" in opts:
+			self.countv = opts["countv"]		
+			
+		self.seconds = defaults["seconds"]
+		if "seconds" in opts:
+			self.seconds = opts["seconds"]
+			
+		self.flags = defaults["flags"]	
+		if "flags" in opts:
+			self.flags = opts["flags"]
+		
+		self.folders = opts["folders"]
+		self.mfolders = opts["mfolders"]
+
+		if "thissong" in opts:
+			self.thissong = opts["thissong"]	
+
+		if "song" in opts:
+			self.song = True
+		
+		if "salts" in opts:
+			self.e8 = EightBall(opts["salts"])
+			self.mode = "salted"			
+		elif "8ball" in opts:
+			self.e8 = EightBall()
+			self.mode = "8ballfree"
+		else:
+			self.mode = "free"
 
 	# makes tree for files
 	def maketree(self, maketreevars):
@@ -266,22 +269,41 @@ class ReMixer:
 
 					time = self.get_time(clip.duration, self.local_random(self.seconds))
 					pathoforiginal = Path(clip.filename)
+					
+					if "split_names" not in self.opts:
+						print("split_names")
+						self.opts["split_names"] = []				
+						print("split_names arr setted")
+
+					print(self.opts["split_names"])
+					print("hey")
 
 					if resolved_dimensions and (time is not False):
 						print("dimensionsOk")
 						print(time)
 
 						randomTitle = str(self.local_random_range(0, 10000))
-						filename = "./splits/cuts/" + randomTitle + "-" + Usefull.remove_spaces(pathoforiginal.name) + "-cut.mp4"
+						prefilename = "./splits/cuts/" + randomTitle + "-" + Usefull.remove_spaces(pathoforiginal.name)
 
 						if "test" not in self.flags:
 							try:
+
+								while prefilename in self.opts["split_names"]:									
+									print("hey")
+									prefilename = prefilename + "d"
+
+								self.opts["split_names"].append(prefilename)
+								filename = prefilename + "-cut.mp4"
+
 								print(filename)
+
 								vid = ffmpeg.input(file)
 								vid = vid.trim(start = time[0][0], end = time[0][1]).setpts('PTS-STARTPTS')
 								output = ffmpeg.output(vid, filename)
 								output.run()
 								print("ffmpeg done")
+
+								
 								return time[0][1] - time[0][0]
 							except:
 								print("ERROR FFMPEG FILE")
@@ -289,7 +311,9 @@ class ReMixer:
 						else:
 							print("test mode")
 							return 0
-			except:
+			except Exception as e:
+				print(f"Type: {type(e).__name__}")
+				print(f"Message: {e}")
 				print("ERROR MOVIEPY FILE")
 				return 0
 
@@ -332,9 +356,12 @@ class ReMixer:
 			video = ffmpeg.input(finalfile)
 			audio = ffmpeg.input(song)
 			audiobasename = Usefull.remove_spaces(os.path.basename(song))
-			ffmpeg.concat(video, audio, v=1, a=1).output('./splits/final_' + datetime.now().strftime("%d.%m.%Y_%H:%M:%S") + audiobasename + '_full_clip.mp4').run()
+			clean_name = "".join(char for char in audiobasename if char.isalnum())
+			ffmpeg.concat(video, audio, v=1, a=1).output('./splits/final_' + datetime.now().strftime("%d.%m.%Y_%H:%M:%S") + clean_name + '_full_clip.mp4').run()			
 			print("clip done")
-		except:
+		except Exception as e:
+			print(f"Type: {type(e).__name__}")
+			print(f"Message: {e}")
 			print("ERROR AUDIO")
 			pass
 
