@@ -32,7 +32,7 @@ class ReMixer:
 				self.maketree(['cuts'])
 				self.split_files()
 
-			if self.song: 
+			if "song" in self.flags: 
 				self.maketree(['cuts', 'prod', 'temp'])
 
 				while True:
@@ -115,13 +115,13 @@ class ReMixer:
 		if "thissong" in opts:
 			self.thissong = opts["thissong"]	
 
-		if "song" in opts:
+		if "song" in self.flags:
 			self.song = True
 		
 		if "salts" in opts:
 			self.e8 = EightBall(opts["salts"])
 			self.mode = "salted"			
-		elif "8ball" in opts:
+		elif "8ball" in self.flags:
 			self.e8 = EightBall()
 			self.mode = "8ballfree"
 		else:
