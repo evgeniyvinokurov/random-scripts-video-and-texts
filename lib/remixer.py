@@ -28,6 +28,17 @@ class ReMixer:
 		finalfile = "./splits/prod/final.mp4"
 
 		try:
+			if 'i' in self.flags:
+				file_path = Path(finalfile)
+				if file_path.exists():
+					self.add_audio(finalfile)
+				else:
+					self.maketree(['prod', 'temp'])
+					self.clear_small_files()
+					self.concatenate(finalfile)
+					self.add_audio(finalfile)
+				return True
+
 			if 'cut' in self.flags:
 				self.maketree(['cuts'])
 				self.split_files()
@@ -63,16 +74,6 @@ class ReMixer:
 				self.clear_small_files()
 				self.concatenate(finalfile)
 				self.add_audio(finalfile)
-
-			if 'i' in self.flags:
-				file_path = Path(finalfile)
-				if file_path.exists():
-					self.add_audio(finalfile)
-				else:
-					self.maketree(['prod', 'temp'])
-					self.concatenate(finalfile)
-					self.add_audio(finalfile)
-				
 
 			if 'j' in self.flags:
 				self.maketree(['prod', 'temp'])
@@ -168,7 +169,7 @@ class ReMixer:
 		video = glob.glob("./splits/cuts/*.mp4")
 		for f in video:
 			size = os.path.getsize(f)
-			if (size < 9000):
+			if (size < 15000):
 				os.remove(f)
 	
 	# gets files for cuts
@@ -367,16 +368,20 @@ class ReMixer:
 
 	# concatentes splits to clip
 	def concatenate(self, finalfile):
-		try:		
+		try:
 			st = "ffmpeg -i \"concat:"
 			alltemp_vids = glob.glob("./splits/cuts/*.mp4")
 			file_temp_ts = []
+
 			for f in alltemp_vids:
 				file = "./splits/temp/temp" + str(alltemp_vids.index(f) + 1) + ".ts"
 				print(f)
 				print(file)
 				os.system("ffmpeg -i " + f + " -c copy -bsf:v h264_mp4toannexb -f mpegts " + file)
-				file_temp_ts.append(file)
+				
+				if os.path.exists(file):
+					file_temp_ts.append(file)
+
 			print(file_temp_ts)
 			file_temp_ts = self.local_shuffle(file_temp_ts)
 			for f in file_temp_ts:
@@ -385,8 +390,10 @@ class ReMixer:
 					st += "|"
 				else:
 					st += "\" -c copy -bsf:a aac_adtstoasc " + finalfile
+
 			print(st)
 			os.system(st)
+
 			print("concatenation done")
 		except:
 			print("ERROR CONCATENATE")
